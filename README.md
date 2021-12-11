@@ -76,7 +76,7 @@ _Input file_ contains vertices and faces(i.e. triangles) information about the s
     [num_handles]
     ... (num_handles * 1) Matrix ...
  
- See `example/input` for a concrete example.
+ See [`example/input`](example/input) for a concrete example.
  
  
 :tada: **It's possible to use standard mesh formats.** We provide a python script in directory `IO` to convert OBJ mesh formats to our `input_file` format.

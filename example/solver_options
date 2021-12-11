@@ -1,0 +1,29 @@
+form
+harmonic
+alphaRatio
+1.e-4
+alpha
+-1
+theta
+0.1
+ftol_abs
+-1
+ftol_rel
+1.e-9
+xtol_abs
+-1
+xtol_rel
+1.e-9
+algorithm
+LBFGS
+maxeval
+300
+stopCode
+none
+record
+vert	0
+energy	1
+minArea	0
+nbWindVert	0
+grad	0
+gradNorm	1

@@ -20,7 +20,7 @@ Here we release SEA-QN, a program that computes injective mapping under position
 
 The above figure illustrates **what SEA does**. It takes as input a source mesh, a group of positional constraints and a non-injective initial map, and outputs an injective map satisfying the positional constraints.
 
-This program has been tested on macOS xx.15.5 (Apple Clang xx.0.3) and Windows 10 (Visual Studio Community 2022).
+This program has been tested on macOS 12.0.1 (Apple Clang 13.0.0.13000029) and Windows 10 (Visual Studio Community 2022).
 
 ## Build
 

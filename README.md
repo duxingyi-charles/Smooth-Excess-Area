@@ -20,9 +20,10 @@ Here we release SEA-QN, a program that computes injective mapping under position
 
 The above figure illustrates **what SEA does**. It takes as input a source mesh, a group of positional constraints and a non-injective initial map, and outputs an injective map satisfying the positional constraints.
 
-This program has been tested on macOS xx.15.5 (Apple Clang xx.0.3) and Windows 10 (visual studio 2019 and 2022).
+This program has been tested on macOS xx.15.5 (Apple Clang xx.0.3) and Windows 10 (Visual Studio Community 2022).
 
 ## Build
+
 
 ### Mac
 
@@ -36,7 +37,12 @@ The program `SEA_QN` will be generated in the `build` subdirectory.
 
 ### Windows
 
-To build the program, you can use CMake to generate a visual studio project from CMakeLists.txt.
+Open the folder containing CMakeLists.txt from visual studio. A cmake project will be configured and then you can build the program `SEA_QN.exe` in visual studio.
+
+### Add support for MaxIteration termination criterion
+
+:bell:  **Important**:
+We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.7.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, you need to replace `src/algs/luksan/plis.c` in the NLopt source code by the file we provide in the folder `LBFGS_iteration_count`. You need to rebuild the program for this change to take effect.
 
 ## How to use
 

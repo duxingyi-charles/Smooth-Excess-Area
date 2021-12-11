@@ -3,7 +3,7 @@
 ![](figure/teaser.jpeg)
 
 [Xingyi Du](https://duxingyi-charles.github.io/), [Danny M. Kaufman](https://research.adobe.com/person/danny-kaufman/), [Qingnan Zhou](https://research.adobe.com/person/qingnan-zhou/), [Shahar Kovalsky](https://shaharkov.github.io/), [Yajie Yan](https://yajieyan.github.io/), [Noam Aigerman](https://research.adobe.com/person/noam-aigerman/), [Tao Ju](https://www.cse.wustl.edu/~taoju/)
-<br/>*ACM Transaction on Graphics (Proceedings of SIGGRAPH 2021)*<br/>
+<br/>*ACM Transaction on Graphics (Proceedings of SIGGRAPH Asia 2021)*<br/>
 
 [`Project Page`](https://duxingyi-charles.github.io/publication/optimizing-global-injectivity-for-constrained-parameterization/)
 [`Dataset`](https://doi.org/10.5281/zenodo.5547887)
@@ -57,7 +57,7 @@ In the 3 arguments, `input_file` is mandatory, while the rest two are optional. 
 
 ### input_file
 
-_Input file_ contains vertices and faces(triangles/tetrahedrons) information about the source mesh and initial embedding, as well as the indices of constrained vertices (called handles, usually are just boundary vertices). Vertices are indexed from 0.
+_Input file_ contains vertices and faces(i.e. triangles) information about the source mesh and initial embedding, as well as the indices of constrained vertices (called handles or positional constraints). Vertices are indexed from 0.
 
 
     [num_sourceVert] [dimension_sourceVert]
@@ -71,9 +71,6 @@ _Input file_ contains vertices and faces(triangles/tetrahedrons) information abo
  
  See `example/input` for a concrete example.
  
-:bell:  **Important**: Since TLC aims at constrained embedding problem, the user should at least provide the indices of boundary vertices as handles in the `input_file`, or provide them in a `handleFile` as described below. 
-To make this easier, we provide a script to generate a `handleFile` containing boundary vertex indices for a given input mesh. See below for usage.
-
  
 :tada: **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
  
@@ -85,23 +82,13 @@ To make this easier, we provide a script to generate a `handleFile` containing b
  
     ./convert_input_2D.py [inputObjFile] [handleFile] [outFile]
  
- Currently, we only support OBJ file with initial mesh as uv coordinates. Check out our [dataset](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark) for some concrete OBJ and handle files.
+ Currently, we only support OBJ file with initial mesh as uv coordinates. Check out our [dataset](https://doi.org/10.5281/zenodo.5547887) for some concrete OBJ and handle files. The `handleFile` contains a list of indices of constrainded vertices (indexed from 0).
  The generated `outFile` will have the format of our `input_file`.
- 
- For your convenience, we also provide a script in directory `IO` to generate a `handleFile` containing all the boundary vertex indices for a given input mesh. The script works for both triangle/tetrahedron mesh.
-   
-     ./extract_boundary_vert.py [inputMeshFile] [outputHandleFile] 
- 
- To convert tetrahedron rest(source) and initial meshes to our input format, run
- 
-    ./convert_input_3D.py [restFile] [initFile] [handleFile] [outFile]
- 
- All tet-mesh formats supported by `meshio` should be handled by this script. We have tested the VTK format. For more examples in VTK format, please check out our [dataset](https://github.com/duxingyi-charles/Locally-Injective-Mappings-Benchmark).
-    
+
  
 ### solver_options_file
 
-_Solver options file_ contains parameters for TLC energy, options for NLopt solver, and a list of intermediate status to record during optimization.
+_Solver options file_ contains parameters for SEA energy, options for NLopt solver, and a list of intermediate status to record during optimization.
 
 
     form
@@ -109,6 +96,8 @@ _Solver options file_ contains parameters for TLC energy, options for NLopt solv
     alphaRatio
     [val]
     alpha
+    [val]
+    theta
     [val]
     ftol_abs
     [val]
@@ -123,32 +112,39 @@ _Solver options file_ contains parameters for TLC energy, options for NLopt solv
     maxeval
     [val]
     stopCode
-    [none OR all_good]
+    [none OR no_flip_degenerate OR locally_injective OR globally_injective]
     record
     vert    [0 OR 1]
     energy  [0 OR 1]
     minArea [0 OR 1]
+    nbWindVert [0 OR 1]
+    grad [0 OR 1]
+    gradNorm [0 OR 1]
 
 The following table explains each option in details.
-We **recommend** using the default values (especially "form", "alphaRatio" and "alpha") as they are most successful in our experiments. 
+We **recommend** using the default values (especially "form", "alphaRatio", "alpha" and "theta") as they lead to high success rate in our experiments. 
  
 See `example\solver_options` for a concrete example.
 
 |                | possible values  | default value | explanation                                                                                                                    |
 |----------------|------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------|
-| form           | harmonic, Tutte  | Tutte         | two forms of TLC energy (see paper for details)                                                                                |
-| alphaRatio     | [0, inf)         | 1e-6          | Specify the ratio of content (area or volume) between rest mesh and target domain. Default value 1e-6 is recommended.          |
+| form           | harmonic, Tutte  | Tutte         | two forms of SEA energy (see paper for details)                                                                                |
+| alphaRatio     | [0, inf)         | 1e-4          | Specify the ratio of content (area or volume) between rest mesh and target domain. Default value 1e-4 is recommended.          |
 | alpha          | (-inf, inf)      | -1            | If negative, alpha will be computed from alphaRatio. If non-negative, alpha will overwrite the value computed from alphaRatio. |
-| ftol_abs       | (-inf, inf)      | 1e-8          | Absolute energy change stop threshold. Negative value means disabled.                                                          |
-| ftol_rel       | (-inf, inf)      | 1e-8          | Relative energy change stop threshold. Negative value means disabled.                                                          |
-| xtol_abs       | (-inf, inf)      | 1e-8          | Absolute variable change stop threshold. Negative value means disabled.                                                        |
-| xtol_rel       | (-inf, inf)      | 1e-8          | Relative variable change stop threshold. Negative value means disabled.                                                        |
+| theta          | [0, 2Pi)         | 0.1           | Specify the center angle of circular arcs replacing straight edges of the mesh boundary. (see paper for details)               |
+| ftol_abs       | (-inf, inf)      | 1e-9          | Absolute energy change stop threshold. Negative value means disabled.                                                          |
+| ftol_rel       | (-inf, inf)      | 1e-9          | Relative energy change stop threshold. Negative value means disabled.                                                          |
+| xtol_abs       | (-inf, inf)      | 1e-9          | Absolute variable change stop threshold. Negative value means disabled.                                                        |
+| xtol_rel       | (-inf, inf)      | 1e-9          | Relative variable change stop threshold. Negative value means disabled.                                                        |
 | algorithm      | LBFGS            | LBFGS         | Quasi-Newton method.                                                                                                           |
-| maxeval        | positive integer | 10000         | max number of iterations stop threshold.                                                                                        |
-| stopCode       | none, all_good   | all_good      | Custom stop criteria. "all_good": optimization will stop when there are no inverted elements.                                   |
+| maxeval        | positive integer | 10000         | max number of iterations stop threshold.                                                                                       |
+| stopCode       | none, no_flip_degenerate, locally_injective, globally_injective   | globally_injective      | Custom stop criteria. "globally_injective": optimization will stop when the map becomes globally injective.                                   |
 | record:vert    | 0, 1             | 0             | 1: record target mesh vertices at each iteration.                                                                              |
-| record:energy  | 0, 1             | 0             | 1: record TLC energy at each iteration.                                                                                        |
+| record:energy  | 0, 1             | 0             | 1: record SEA energy at each iteration.                                                                                        |
 | record:minArea | 0, 1             | 0             | 1: record smallest simplex signed content (area or volume) at each iteration.                                                  |
+| record:nbWindVert | 0, 1          | 0             | 1: record number of overwound vertices at each iteration.                                                                      |
+| record:grad       | 0, 1          | 0             | 1: record gradient at each iteration.                                                                                          |
+| record:gradNorm   | 0, 1          | 0             | 1: record the norm of gradient at each iteration.                                                                              |
       
    
 
@@ -171,7 +167,7 @@ Usage
 
 For example, 
 
-    ./get_result_mesh.py example/input example/result result.vtk
+    ./get_result_mesh.py example/input example/result result.obj
 
 
 ## Dataset
@@ -179,4 +175,4 @@ For example,
 **Download**:
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5547887.svg)](https://doi.org/10.5281/zenodo.5547887)
 
-We release the large benchmark dataset of triangle meshes used to evaluate our method and compare with existing methods. The dataset includes _1791_ triangular mesh examples. Each example includes a source mesh, up to 20 positional constraints, and a non-injective initial mesh generated by ARAP method. The dataset comes with both inputs and results of our method.
+We release the benchmark dataset used to evaluate our method and compare with existing methods. The dataset includes _1791_ triangular mesh examples. Each example includes a source mesh, up to 20 positional constraints, and a non-injective initial mesh generated by ARAP method. The dataset comes with both inputs and results of our method.

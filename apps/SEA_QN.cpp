@@ -25,14 +25,14 @@ class NloptOptionManager
 public:
     //default options
     NloptOptionManager():
-            form("Tutte"), alphaRatio(1e-6), alpha(-1), theta(0.1),
-            ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
+            form("Tutte"), alphaRatio(1e-4), alpha(-1), theta(0.1),
+            ftol_abs(1e-9), ftol_rel(1e-9), xtol_abs(1e-9), xtol_rel(1e-9),
             maxeval(10000), algorithm("LBFGS"), stopCode("globally_injective"), record()
     {};
     //import options from file
     explicit NloptOptionManager(const char* filename):
-            form("Tutte"), alphaRatio(1e-6), alpha(-1), theta(0.1),
-            ftol_abs(1e-8), ftol_rel(1e-8), xtol_abs(1e-8), xtol_rel(1e-8),
+            form("Tutte"), alphaRatio(1e-4), alpha(-1), theta(0.1),
+            ftol_abs(1e-9), ftol_rel(1e-9), xtol_abs(1e-9), xtol_rel(1e-9),
             maxeval(10000), algorithm("LBFGS"), stopCode("globally_injective"), record()
     {
         if (!importOptions(filename))

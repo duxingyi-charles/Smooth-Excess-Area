@@ -43,7 +43,7 @@ Open the folder containing CMakeLists.txt from visual studio. A cmake project wi
 ### Add support for MaxIteration termination criterion
 
 :bell:  **Important**:
-We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.7.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, you need to replace the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` by the file we provide in the folder `LBFGS_iteration_count`. You need to rebuild the program for this change to take effect.
+We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.7.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, you need to replace the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` by the file [`plis.c`](LBFGS_iteration_count/plis.c) we provide in the folder `LBFGS_iteration_count`. You need to rebuild the program for this change to take effect.
 
 ## How to use
 
@@ -131,7 +131,7 @@ _Solver options file_ contains parameters for SEA energy, options for NLopt solv
 The following table explains each option in details.
 We **recommend** using the default values (especially "form", "alphaRatio", "alpha" and "theta") as they lead to high success rate in our experiments. 
  
-See `example\solver_options` for a concrete example.
+See [`example/solver_options`](example/solver_options) for a concrete example.
 
 |                | possible values  | default value | explanation                                                                                                                    |
 |----------------|------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------|
@@ -164,7 +164,7 @@ _Result file_ stores the vertices of result mesh, and also intermediate records 
     data
     ...
 
-See `example\result` for a concrete example.
+See [`example/result`](example/result) for a concrete example.
 
 We provide a script to convert a `result_file` to a mesh file in directory `IO`.
 

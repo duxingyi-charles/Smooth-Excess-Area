@@ -72,9 +72,9 @@ _Input file_ contains vertices and faces(i.e. triangles) information about the s
  See `example/input` for a concrete example.
  
  
-:tada: **It's possible to use your own mesh formats.** We provide two python scripts in directory `IO` to convert common mesh formats to our `input_file` format.
+:tada: **It's possible to use standard mesh formats.** We provide a python script in directory `IO` to convert OBJ mesh formats to our `input_file` format.
  
- To use the two scripts, make sure to install [meshio](https://github.com/nschloe/meshio) with
+ To use the script, make sure to install [meshio](https://github.com/nschloe/meshio) with
  
      pip install meshio
  

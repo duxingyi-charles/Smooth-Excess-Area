@@ -27,11 +27,12 @@ This program has been tested on macOS xx.15.5 (Apple Clang xx.0.3) and Windows 1
 
 ### Mac
 
-We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.6.1)'s L-BFGS quasi-Newton implementation.
+In terminal, navigate to our main directory, and run the following commands: 
 
-The easiest way to build on Mac is to run the script, which installs NLopt using [homebrew](https://brew.sh/) and compiles the program.
-
-    ./build_mac.sh
+    mkdir build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    make -j
 
 The program `SEA_QN` will be generated in the `build` subdirectory.
 
@@ -42,7 +43,7 @@ Open the folder containing CMakeLists.txt from visual studio. A cmake project wi
 ### Add support for MaxIteration termination criterion
 
 :bell:  **Important**:
-We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.7.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, you need to replace `src/algs/luksan/plis.c` in the NLopt source code by the file we provide in the folder `LBFGS_iteration_count`. You need to rebuild the program for this change to take effect.
+We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.7.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, you need to replace the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` by the file we provide in the folder `LBFGS_iteration_count`. You need to rebuild the program for this change to take effect.
 
 ## How to use
 

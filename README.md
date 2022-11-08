@@ -16,7 +16,7 @@ Injective parameterizations of triangulated meshes are critical across applicati
 
 ![](figure/overview.png)
 
-Here we release SEA-QN, a program that computes injective mapping under positional constraints by minimize SEA (Smooth Excess Area) energy using quasi-Newton method.
+Here we release SEA-QN, a program that computes injective mapping under positional constraints by minimizing SEA (Smooth Excess Area) energy using quasi-Newton method.
 
 The above figure illustrates **what SEA does**. It takes as input a source mesh, a group of positional constraints and a non-injective initial map, and outputs an injective map satisfying the positional constraints.
 

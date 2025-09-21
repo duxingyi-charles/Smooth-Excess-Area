@@ -43,11 +43,11 @@ Open the folder containing CMakeLists.txt from visual studio. A cmake project wi
 ### Add support for MaxIteration termination criterion
 
 :bell:  **Important**:
-We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.10.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, we made some changes to the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` . We provide a patch file `nlopt_plis_fix.path` in the folder `LBFGS_iteration_count`. 
+We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.10.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, we made some changes to the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` . We provide a patch file `nlopt_plis_fix.patch` in the folder `LBFGS_iteration_count`. 
 You can apply the patch by running
 
     cd path/to/_deps/nlopt-src/
-    git apply path/to/LBFGS_iteration_count/nlopt_plis_fix.path 
+    git apply path/to/LBFGS_iteration_count/nlopt_plis_fix.patch
 
 You need to rebuild the program for this change to take effect.
 

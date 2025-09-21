@@ -709,7 +709,7 @@ int main(int argc, char const *argv[])
 
     bool succeed = importData(dataFile,restV,initV,F,handles);
     if (!succeed) {
-        std::cout << "usage: arcOverlap_QN [inputFile] [solverOptionsFile] [resultFile]" << std::endl;
+        std::cout << "usage: SEA_QN [inputFile] [solverOptionsFile] [resultFile]" << std::endl;
         return -1;
     }
 

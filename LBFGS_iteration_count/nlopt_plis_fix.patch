@@ -1,0 +1,12 @@
+diff --git a/src/algs/luksan/plis.c b/src/algs/luksan/plis.c
+index 99dffb6..73010de 100644
+--- a/src/algs/luksan/plis.c
++++ b/src/algs/luksan/plis.c
+@@ -267,6 +267,7 @@ L11120:
+ 	    &kd, &stat_1->nit, &kit, mit, &stat_1->nfg, &mfg,
+ 	    &ntesx, &mtesx, &ntesf, &mtesf, &ites, &ires1, &ires2, &irest, &
+ 	    iters, iterm);
++    objgrad(*nf, &x[1], NULL, objgrad_data); //pure function evaluation
+     if (*iterm != 0) {
+ 	goto L11190;
+     }

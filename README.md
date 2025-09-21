@@ -20,7 +20,7 @@ Here we release SEA-QN, a program that computes injective mapping under position
 
 The above figure illustrates **what SEA does**. It takes as input a source mesh, a group of positional constraints and a non-injective initial map, and outputs an injective map satisfying the positional constraints.
 
-This program has been tested on macOS 12.0.1 (Apple Clang 13.0.0.13000029) and Windows 10 (Visual Studio Community 2022).
+This program has been tested on macOS 15.6.1 and Windows 10 (Visual Studio Community 2022).
 
 ## Build
 
@@ -43,7 +43,13 @@ Open the folder containing CMakeLists.txt from visual studio. A cmake project wi
 ### Add support for MaxIteration termination criterion
 
 :bell:  **Important**:
-We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.7.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, you need to replace the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` by the file [`plis.c`](LBFGS_iteration_count/plis.c) we provide in the folder `LBFGS_iteration_count`. You need to rebuild the program for this change to take effect.
+We use [NLopt](https://nlopt.readthedocs.io/en/latest/) (version 2.10.0)'s L-BFGS quasi-Newton solver for optimization. This implementation doesn't track L-BFGS iterations, so it doesn't natively support the maxIteration termination criterion. To support this termination criterion, we made some changes to the NLopt source file `_deps/nlopt-src/src/algs/luksan/plis.c` . We provide a patch file `nlopt_plis_fix.path` in the folder `LBFGS_iteration_count`. 
+You can apply the patch by running
+
+    cd path/to/_deps/nlopt-src/
+    git apply path/to/LBFGS_iteration_count/nlopt_plis_fix.path 
+
+You need to rebuild the program for this change to take effect.
 
 ## How to use
 
